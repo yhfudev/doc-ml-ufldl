@@ -1,0 +1,349 @@
+%# -*- coding: utf-8 -*-
+%!TEX encoding = UTF-8 Unicode
+%!TEX TS-program = xelatex
+% vim:ts=4:sw=4
+%
+% 以上设定默认使用 XeLaTex 编译，并指定 Unicode 编码，供 TeXShop 自动识别
+
+% Author: Yunhui Fu <yhfudev@gmail.com>
+% License: Creative Commons (CC BY 4.0)
+
+\section{\cnt{Softmax Regression}{Softmax回归}{}} \label{chp:softmaxreg}
+
+\subsection{\cnt{Softmax Regression}{Softmax回归}{}}
+
+\subsubsection{\cnt{Introduction}{介绍}{}}
+
+\cnt{In these notes, we describe the \emph{Softmax regression} model. This model generalizes logistic regression to classification problems where the class label $y$ can take on more than two possible values. This will be useful for such problems as MNIST digit classification, where the goal is to distinguish between 10 different numerical digits. Softmax regression is a supervised learning algorithm, but we will later be using it in conjuction with our deep learning/unsupervised feature learning methods.}
+    {在本节中，我们介绍 \emph{Softmax回归}模型，该模型是logistic回归模型在多分类问题上的推广，在多分类问题中，类标签 $y$ 可以取两个以上的值。 Softmax回归模型对于诸如 MNIST\footnote{译者注： MNIST 是一个手写数字识别库，由NYU 的Yann LeCun 等人维护。\url{http://yann.lecun.com/exdb/mnist/}.} 手写数字分类等问题是很有用的，该问题的目的是辨识10个不同的单个数字。Softmax回归是有监督的，不过后面也会介绍它与深度学习/无监督学习方法的结合。}
+    {}
+
+
+\cnt{Recall that in logistic regression, we had a training set $\{ (x^{(1)}, y^{(1)}), \ldots, (x^{(m)}, y^{(m)}) \}$ of $m$ labeled examples, where the input features are $x^{(i)} \in \Re^{n+1}$. (In this set of notes, we will use the notational convention of letting the feature vectors $x$ be $n + 1$ dimensional, with $x_0 = 1$ corresponding to the intercept term.) With logistic regression, we were in the binary classification setting, so the labels were $y^{(i)} \in \{0,1\}$. Our hypothesis took the form:}
+    {回想一下在 logistic 回归中，我们的训练集由 $m$ 个已标记的样本构成：$\{ (x^{(1)}, y^{(1)}), \ldots, (x^{(m)}, y^{(m)}) \}$，其中输入特征 $x^{(i)} \in \Re^{n+1}$。（我们对符号的约定如下：特征向量 $x$ 的维度为 $n+1$，其中 $x_0 = 1$ 对应截距项 。） 由于 logistic 回归是针对二分类问题的，因此类标记 $y^{(i)} \in \{0,1\}$。假设函数(hypothesis function) 如下：}
+    {}
+\begin{align} h_\theta(x) = \frac{1}{1+\exp(-\theta^Tx)}, \end{align}
+
+\cnt{and the model parameters $\theta$ were trained to minimize the cost function}
+    {我们将训练模型参数 $\theta$，使其能够最小化代价函数 ：}
+    {}
+\begin{align} J(\theta) = -\frac{1}{m} \left[ \sum_{i=1}^m y^{(i)} \log h_\theta(x^{(i)}) + (1-y^{(i)}) \log (1-h_\theta(x^{(i)})) \right] \end{align}
+
+\cnt{In the softmax regression setting, we are interested in multi-class classification (as opposed to only binary classification), and so the label y can take on k different values, rather than only two. Thus, in our training set $\{ (x^{(1)}, y^{(1)}), \ldots, (x^{(m)}, y^{(m)}) \}$, we now have that $y^{(i)} \in \{1, 2, \ldots, k\}$. (Note that our convention will be to index the classes starting from 1, rather than from 0.) For example, in the MNIST digit recognition task, we would have $k = 10$ different classes.}
+    {在 softmax回归中，我们解决的是多分类问题（相对于 logistic 回归解决的二分类问题），类标 $y$ 可以取 $k$ 个不同的值（而不是 2 个）。因此，对于训练集 $\{ (x^{(1)}, y^{(1)}), \ldots, (x^{(m)}, y^{(m)}) \}$，我们有 $y^{(i)} \in \{1, 2, \ldots, k\}$。（注意此处的类别下标从 1 开始，而不是 0）。例如，在 MNIST 数字识别任务中，我们有 $k=10$ 个不同的类别。}
+    {}
+
+
+\cnt{Given a test input $x$, we want our hypothesis to estimate the probability that $p(y = j | x)$ for each value of $j = 1, \ldots, k$. I.e., we want to estimate the probability of the class label taking on each of the $k$ different possible values. Thus, our hypothesis will output a $k$ dimensional vector (whose elements sum to 1) giving us our $k$ estimated probabilities. Concretely, our hypothesis $h_{\theta}(x)$ takes the form:}
+    {对于给定的测试输入 $x$，我们想用假设函数针对每一个类别j估算出概率值 $p(y=j | x)$。也就是说，我们想估计 $x$ 的每一种分类结果出现的概率。因此，我们的假设函数将要输出一个 $k$ 维的向量（向量元素的和为1）来表示这 $k$ 个估计的概率值。 具体地说，我们的假设函数 $h_{\theta}(x)$ 形式如下：}
+    {}
+\begin{align} h_\theta(x^{(i)}) = \begin{bmatrix} p(y^{(i)} = 1 | x^{(i)}; \theta) \\ p(y^{(i)} = 2 | x^{(i)}; \theta) \\ \vdots \\ p(y^{(i)} = k | x^{(i)}; \theta) \end{bmatrix} = \frac{1}{ \sum_{j=1}^{k}{e^{ \theta_j^T x^{(i)}}}} \begin{bmatrix} e^{ \theta_1^T x^{(i)}} \\ e^{ \theta_2^T x^{(i)}} \\ \vdots \\ e^{ \theta_k^T x^{(i)}} \\ \end{bmatrix} \end{align}
+
+
+\cnt{Here $\theta_1, \theta_2, \ldots, \theta_k \in \Re^{n+1}$ are the parameters of our model. Notice that the term $\frac{1}{ \sum_{j=1}^{k}{e^{ \theta_j^T x^{(i)}}}}$ normalizes the distribution, so that it sums to one.}
+    {其中 $\theta_1, \theta_2, \ldots, \theta_k \in \Re^{n+1}$ 是模型的参数。请注意 $\frac{1}{ \sum_{j=1}^{k}{e^{ \theta_j^T x^{(i)}}}}$ 这一项对概率分布进行归一化，使得所有概率之和为 1 。}
+    {}
+
+\cnt{For convenience, we will also write $\theta$ to denote all the parameters of our model. When you implement softmax regression, it is usually convenient to represent $\theta$ as a $k$-by-$(n + 1)$ matrix obtained by stacking up $\theta_1, \theta_2, \ldots, \theta_k$ in rows, so that}
+    {为了方便起见，我们同样使用符号 $\theta$ 来表示全部的模型参数。在实现Softmax回归时，将 $\theta$ 用一个 $k \times (n+1)$ 的矩阵来表示会很方便，该矩阵是将 $\theta_1, \theta_2, \ldots, \theta_k$ 按行罗列起来得到的，如下所示：}
+    {}
+$$
+\theta = \begin{bmatrix} \mbox{---} \theta_1^T \mbox{---} \\ \mbox{---} \theta_2^T \mbox{---} \\ \vdots \\ \mbox{---} \theta_k^T \mbox{---} \\ \end{bmatrix}
+$$
+
+\subsubsection{\cnt{Cost Function}{代价函数}{}}
+
+\cnt{We now describe the cost function that we'll use for softmax regression. In the equation below, $1\{\cdot\}$ is the indicator function, so that $1\{{\rm \texttt{a true statement}}\} = 1$, and $1\{{\rm \texttt{a false statement}}\} = 0$. For example, $1\{2 + 2 = 4\}$ evaluates to 1; whereas $1\{1 + 1 = 5\}$ evaluates to 0. Our cost function will be:}
+    {现在我们来介绍 softmax 回归算法的代价函数。在下面的公式中，$1\{\cdot\}$ 是示性函数，其取值规则为：$1\{ {\rm \texttt{值为真的表达式}} \}=1$， $1\{ {\rm \texttt{值为假的表达式}} \}=0$。举例来说，表达式 $1\{2+2=4\}$ 的值为1 ，$1\{1+1=5\}$的值为 0。我们的代价函数为：}
+    {}
+
+\begin{align} J(\theta) = - \frac{1}{m} \left[ \sum_{i=1}^{m} \sum_{j=1}^{k} 1\left\{y^{(i)} = j\right\} \log \frac{e^{\theta_j^T x^{(i)}}}{\sum_{l=1}^k e^{ \theta_l^T x^{(i)}}}\right] \end{align}
+
+\cnt{Notice that this generalizes the logistic regression cost function, which could also have been written:}
+    {值得注意的是，上述公式是logistic回归代价函数的推广。logistic回归代价函数可以改为：}
+    {}
+
+\begin{align} J(\theta) &= -\frac{1}{m} \left[ \sum_{i=1}^m (1-y^{(i)}) \log (1-h_\theta(x^{(i)})) + y^{(i)} \log h_\theta(x^{(i)}) \right] \\ &= - \frac{1}{m} \left[ \sum_{i=1}^{m} \sum_{j=0}^{1} 1\left\{y^{(i)} = j\right\} \log p(y^{(i)} = j | x^{(i)} ; \theta) \right] \end{align}
+
+\cnt{The softmax cost function is similar, except that we now sum over the $k$ different possible values of the class label. Note also that in softmax regression, we have that}
+    {可以看到，Softmax代价函数与logistic 代价函数在形式上非常类似，只是在Softmax损失函数中对类标记的 $k$ 个可能值进行了累加。注意在Softmax回归中将 $x$ 分类为类别 $j$ 的概率为：}
+    {}
+$p(y^{(i)} = j | x^{(i)} ; \theta) = \frac{e^{\theta_j^T x^{(i)}}}{\sum_{l=1}^k e^{ \theta_l^T x^{(i)}}}$ .
+
+\cnt{There is no known closed-form way to solve for the minimum of $J(\theta)$, and thus as usual we'll resort to an iterative optimization algorithm such as gradient descent or L-BFGS. Taking derivatives, one can show that the gradient is:}
+    {对于 $J(\theta)$ 的最小化问题，目前还没有闭式解法。因此，我们使用迭代的优化算法（例如梯度下降法，或 L-BFGS）。经过求导，我们得到梯度公式如下：}
+    {}
+\begin{align} \nabla_{\theta_j} J(\theta) = - \frac{1}{m} \sum_{i=1}^{m}{ \left[ x^{(i)} \left( 1\{ y^{(i)} = j\} - p(y^{(i)} = j | x^{(i)}; \theta) \right) \right]} \end{align}
+
+
+\cnt{Recall the meaning of the ``$\nabla_{\theta_j}$" notation. In particular, $\nabla_{\theta_j} J(\theta)$ is itself a vector, so that its $l$-th element is $\frac{\partial J(\theta)}{\partial \theta_{jl}}$ the partial derivative of $J(\theta)$ with respect to the $l$-th element of $\theta_j$.}
+    {让我们来回顾一下符号 ``$\nabla_{\theta_j}$" 的含义。$\nabla_{\theta_j} J(\theta)$ 本身是一个向量，它的第 $l$ 个元素 $\frac{\partial J(\theta)}{\partial \theta_{jl}}$ 是 $J(\theta)$ 对 $\theta_j$ 的第 $l$ 个分量的偏导数。}
+    {}
+
+
+\cnt{Armed with this formula for the derivative, one can then plug it into an algorithm such as gradient descent, and have it minimize $J(\theta)$. For example, with the standard implementation of gradient descent, on each iteration we would perform the update $\theta_j := \theta_j - \alpha \nabla_{\theta_j} J(\theta)$ (for each $j=1,\ldots,k$).}
+    {有了上面的偏导数公式以后，我们就可以将它代入到梯度下降法等算法中，来最小化 $J(\theta)$。 例如，在梯度下降法的标准实现中，每一次迭代需要进行如下更新: $\theta_j := \theta_j - \alpha \nabla_{\theta_j} J(\theta)$ ( $j=1,\ldots,k$)。}
+    {}
+
+
+\cnt{When implementing softmax regression, we will typically use a modified version of the cost function described above; specifically, one that incorporates weight decay. We describe the motivation and details below.}
+    {当实现 softmax 回归算法时， 我们通常会使用上述代价函数的一个改进版本。具体来说，就是和权重衰减(weight decay)一起使用。我们接下来介绍使用它的动机和细节。}
+    {}
+
+
+\subsubsection{\cnt{Properties of softmax regression parameterization}{Softmax回归模型参数化的特点}{}}
+
+\cnt{Softmax regression has an unusual property that it has a ``redundant" set of parameters. To explain what this means, suppose we take each of our parameter vectors $\theta_j$, and subtract some fixed vector $\psi$ from it, so that every $\theta_j$ is now replaced with $\theta_j - \psi$ (for every $j=1, \ldots, k$). Our hypothesis now estimates the class label probabilities as}
+    {Softmax 回归有一个不寻常的特点：它有一个“冗余”的参数集。为了便于阐述这一特点，假设我们从参数向量 $\theta_j$ 中减去了向量 $\psi$，这时，每一个 $\theta_j$ 都变成了 $\theta_j - \psi$ ($j=1, \ldots, k$)。此时假设函数变成了以下的式子：}
+    {}
+\begin{align} p(y^{(i)} = j | x^{(i)} ; \theta) &= \frac{e^{(\theta_j-\psi)^T x^{(i)}}}{\sum_{l=1}^k e^{ (\theta_l-\psi)^T x^{(i)}}} \\ &= \frac{e^{\theta_j^T x^{(i)}} e^{-\psi^Tx^{(i)}}}{\sum_{l=1}^k e^{\theta_l^T x^{(i)}} e^{-\psi^Tx^{(i)}}} \\ &= \frac{e^{\theta_j^T x^{(i)}}}{\sum_{l=1}^k e^{ \theta_l^T x^{(i)}}}. \end{align}
+
+\cnt{In other words, subtracting $\psi$ from every $\theta_j$ does not affect our hypothesis' predictions at all! This shows that softmax regression's parameters are ``redundant." More formally, we say that our softmax model is overparameterized, meaning that for any hypothesis we might fit to the data, there are multiple parameter settings that give rise to exactly the same hypothesis function $h_\theta$ mapping from inputs $x$ to the predictions.}
+    {换句话说，从 $\theta_j$ 中减去 $\psi$ 完全不影响假设函数的预测结果！这表明前面的 softmax 回归模型中存在冗余的参数。更正式一点来说， Softmax 模型被过度参数化了。对于任意一个用于拟合数据的假设函数，可以求出多组参数值，这些参数得到的是完全相同的假设函数 $h_\theta$。}
+    {}
+
+
+\cnt{Further, if the cost function $J(\theta)$ is minimized by some setting of the parameters $(\theta_1, \theta_2,\ldots, \theta_k)$, then it is also minimized by $(\theta_1 - \psi, \theta_2 - \psi,\ldots, \theta_k - \psi)$ for any value of $\psi$. Thus, the minimizer of $J(\theta)$ is not unique. (Interestingly, $J(\theta)$ is still convex, and thus gradient descent will not run into a local optima problems. But the Hessian is singular/non-invertible, which causes a straightforward implementation of Newton's method to run into numerical problems.)}
+    {进一步而言，如果参数 $(\theta_1, \theta_2,\ldots, \theta_k)$ 是代价函数 $J(\theta)$ 的极小值点，那么 $(\theta_1 - \psi, \theta_2 - \psi,\ldots, \theta_k - \psi)$ 同样也是它的极小值点，其中 $\psi$ 可以为任意向量。因此使 $J(\theta)$ 最小化的解不是唯一的。（有趣的是，由于 $J(\theta)$ 仍然是一个凸函数，因此梯度下降时不会遇到局部最优解的问题。但是 Hessian 矩阵是奇异的/不可逆的，这会直接导致采用牛顿法优化就遇到数值计算的问题）}
+    {}
+
+
+\cnt{Notice also that by setting $\psi = \theta_1$, one can always replace $\theta_1$ with $\theta_1 - \psi = \vec{0}$ (the vector of all 0's), without affecting the hypothesis. Thus, one could ``eliminate" the vector of parameters $\theta_1$ (or any other $\theta_j$, for any single value of $j$), without harming the representational power of our hypothesis. Indeed, rather than optimizing over the $k(n + 1)$ parameters $(\theta_1, \theta_2,\ldots, \theta_k)$ (where $\theta_j \in \Re^{n+1}$), one could instead set $\theta_1 = \vec{0}$ and optimize only with respect to the $(k − 1)(n + 1)$ remaining parameters, and this would work fine.}
+    {注意，当 $\psi = \theta_1$ 时，我们总是可以将 $\theta_1$ 替换为 $\theta_1 - \psi = \vec{0}$（即替换为全零向量），并且这种变换不会影响假设函数。因此我们可以去掉参数向量 $\theta_1$ （或者其他 $\theta_j$ 中的任意一个）而不影响假设函数的表达能力。实际上，与其优化全部的 $k\times(n+1)$ 个参数 $(\theta_1, \theta_2,\ldots, \theta_k)$ （其中 $\theta_j \in \Re^{n+1}$），我们可以令 $\theta_1 = \vec{0}$，只优化剩余的 $(k-1)\times(n+1)$ 个参数，这样算法依然能够正常工作。}
+    {}
+
+
+\cnt{In practice, however, it is often cleaner and simpler to implement the version which keeps all the parameters $(\theta_1, \theta_2,\ldots, \theta_n)$, without arbitrarily setting one of them to zero. But we will make one change to the cost function: Adding weight decay. This will take care of the numerical problems associated with softmax regression's overparameterized representation.}
+    {在实际应用中，为了使算法实现更简单清楚，往往保留所有参数 $(\theta_1, \theta_2,\ldots, \theta_n)$，而不任意地将某一参数设置为 0。但此时我们需要对代价函数做一个改动：加入权重衰减。权重衰减可以解决 softmax 回归的参数冗余所带来的数值问题。}
+    {}
+
+
+\subsubsection{\cnt{Weight Decay}{权重衰减}{}}
+
+\cnt{We will modify the cost function by adding a weight decay term $\frac{\lambda}{2} \sum_{i=1}^k \sum_{j=0}^{n} \theta_{ij}^2$ which penalizes large values of the parameters. Our cost function is now}
+    {我们通过添加一个权重衰减项 $\frac{\lambda}{2} \sum_{i=1}^k \sum_{j=0}^{n} \theta_{ij}^2$ 来修改代价函数，这个衰减项会惩罚过大的参数值，现在我们的代价函数变为：}
+    {}
+\begin{align} J(\theta) = - \frac{1}{m} \left[ \sum_{i=1}^{m} \sum_{j=1}^{k} 1\left\{y^{(i)} = j\right\} \log \frac{e^{\theta_j^T x^{(i)}}}{\sum_{l=1}^k e^{ \theta_l^T x^{(i)}}} \right] + \frac{\lambda}{2} \sum_{i=1}^k \sum_{j=0}^n \theta_{ij}^2 \end{align}
+
+\cnt{With this weight decay term (for any $\lambda > 0$), the cost function $J(\theta)$ is now strictly convex, and is guaranteed to have a unique solution. The Hessian is now invertible, and because $J(\theta)$ is convex, algorithms such as gradient descent, L-BFGS, etc. are guaranteed to converge to the global minimum.}
+    {有了这个权重衰减项以后 ($\lambda > 0$)，代价函数就变成了严格的凸函数，这样就可以保证得到唯一的解了。 此时的 Hessian矩阵变为可逆矩阵，并且因为$J(\theta)$是凸函数，梯度下降法和 L-BFGS 等算法可以保证收敛到全局最优解。}
+    {}
+
+
+\cnt{To apply an optimization algorithm, we also need the derivative of this new definition of $J(\theta)$. One can show that the derivative is:}
+    {为了使用优化算法，我们需要求得这个新函数 $J(\theta)$ 的导数，如下：}
+    {}
+\begin{align} \nabla_{\theta_j} J(\theta) = - \frac{1}{m} \sum_{i=1}^{m}{ \left[ x^{(i)} ( 1\{ y^{(i)} = j\} - p(y^{(i)} = j | x^{(i)}; \theta) ) \right]} + \lambda \theta_j \end{align}
+
+\cnt{By minimizing $J(\theta)$ with respect to $\theta$, we will have a working implementation of softmax regression.}
+    {通过最小化 $J(\theta)$，我们就能实现一个可用的 softmax 回归模型。}
+    {}
+
+\subsubsection{\cnt{Relationship to Logistic Regression}{Softmax回归与Logistic 回归的关系}{}}
+
+\cnt{In the special case where $k = 2$, one can show that softmax regression reduces to logistic regression. This shows that softmax regression is a generalization of logistic regression. Concretely, when $k = 2$, the softmax regression hypothesis outputs}
+    {当类别数 $k = 2$ 时，softmax 回归退化为 logistic 回归。这表明 softmax 回归是 logistic 回归的一般形式。具体地说，当 $k = 2$ 时，softmax 回归的假设函数为：}
+    {}
+\begin{align} h_\theta(x) &= \frac{1}{ e^{\theta_1^Tx} + e^{ \theta_2^T x^{(i)}}} \begin{bmatrix} e^{ \theta_1^T x} \\ e^{ \theta_2^T x} \end{bmatrix} \end{align}
+
+\cnt{Taking advantage of the fact that this hypothesis is overparameterized and setting $\psi = \theta_1$, we can subtract $\theta_1$ from each of the two parameters, giving us}
+    {利用softmax回归参数冗余的特点，我们令 $\psi = \theta_1$，并且从两个参数向量中都减去向量 $\theta_1$，得到:}
+    {}
+
+
+\begin{align} h(x) &= \frac{1}{ e^{\vec{0}^Tx} + e^{ (\theta_2-\theta_1)^T x^{(i)}}} \begin{bmatrix} e^{ \vec{0}^T x} \\ e^{ (\theta_2-\theta_1)^T x} \end{bmatrix} \\ &= \begin{bmatrix} \frac{1}{ 1 + e^{ (\theta_2-\theta_1)^T x^{(i)}}} \\ \frac{e^{ (\theta_2-\theta_1)^T x}}{ 1 + e^{ (\theta_2-\theta_1)^T x^{(i)}}} \end{bmatrix} \\ &= \begin{bmatrix} \frac{1}{ 1 + e^{ (\theta_2-\theta_1)^T x^{(i)}}} \\ 1 - \frac{1}{ 1 + e^{ (\theta_2-\theta_1)^T x^{(i)}}} \\ \end{bmatrix} \end{align}
+
+
+\cnt{Thus, replacing $\theta_2 − \theta_1$ with a single parameter vector $\theta'$, we find that softmax regression predicts the probability of one of the classes as $\frac{1}{ 1 + e^{ (\theta')^T x^{(i)}}}$, and that of the other class as $1 - \frac{1}{ 1 + e^{ (\theta')^T x^{(i)}}}$, same as logistic regression.}
+    {因此，用 $\theta'$ 来表示 $\theta_2-\theta_1$，我们就会发现 softmax 回归器预测其中一个类别的概率为 $\frac{1}{ 1 + e^{ (\theta')^T x^{(i)}}}$，另一个类别概率的为 $1 - \frac{1}{ 1 + e^{ (\theta')^T x^{(i)}}}$，这与 logistic回归是一致的。}
+    {}
+
+
+\subsubsection{\cnt{Softmax Regression vs. $k$ Binary Classifiers}{Softmax 回归 vs. $k$ 个二元分类器}{}}
+
+\cnt{Suppose you are working on a music classification application, and there are $k$ types of music that you are trying to recognize. Should you use a softmax classifier, or should you build $k$ separate binary classifiers using logistic regression?}
+    {如果你在开发一个音乐分类的应用，需要对$k$种类型的音乐进行识别，那么是选择使用 softmax 分类器呢，还是使用 logistic 回归算法建立 $k$ 个独立的二元分类器呢？}
+    {}
+
+
+\cnt{This will depend on whether the four classes are mutually exclusive. For example, if your four classes are classical, country, rock, and jazz, then assuming each of your training examples is labeled with exactly one of these four class labels, you should build a softmax classifier with $k = 4$. (If there're also some examples that are none of the above four classes, then you can set $k = 5$ in softmax regression, and also have a fifth, ``none of the above," class.)}
+    {这一选择取决于你的类别之间是否互斥，例如，如果你有四个类别的音乐，分别为：古典音乐、乡村音乐、摇滚乐和爵士乐，那么你可以假设每个训练样本只会被打上一个标签（即：一首歌只能属于这四种音乐类型的其中一种），此时你应该使用类别数 $k = 4$ 的softmax回归。（如果在你的数据集中，有的歌曲不属于以上四类的其中任何一类，那么你可以添加一个“其他类”，并将类别数 $k$ 设为5。）}
+    {}
+
+
+\cnt{If however your categories are \texttt{has\_vocals}, dance, soundtrack, pop, then the classes are not \emph{mutually exclusive}; for example, there can be a piece of pop music that comes from a soundtrack and in addition has vocals. In this case, it would be more appropriate to build 4 binary logistic regression classifiers. This way, for each new musical piece, your algorithm can separately decide whether it falls into each of the four categories.}
+    {如果你的四个类别如下：人声音乐、舞曲、影视原声、流行歌曲，那么这些类别之间并不是互斥的。例如：一首歌曲可以来源于影视原声，同时也包含人声 。这种情况下，使用4个二分类的 logistic 回归分类器更为合适。这样，对于每个新的音乐作品 ，我们的算法可以分别判断它是否属于各个类别。}
+    {}
+
+
+\cnt{Now, consider a computer vision example, where you're trying to classify images into three different classes. (i) Suppose that your classes are \texttt{indoor\_scene, outdoor\_urban\_scene}, and \texttt{outdoor\_wilderness\_scene}. Would you use sofmax regression or three logistic regression classifiers? (ii) Now suppose your classes are indoor\_scene, black\_and\_white\_image, and image\_has\_people. Would you use softmax regression or multiple logistic regression classifiers?}
+    {现在我们来看一个计算视觉领域的例子，你的任务是将图像分到三个不同类别中。(i) 假设这三个类别分别是：室内场景、户外城区场景、户外荒野场景。你会使用sofmax回归还是 3个logistic 回归分类器呢？ (ii) 现在假设这三个类别分别是室内场景、黑白图片、包含人物的图片，你又会选择 softmax 回归还是多个 logistic 回归分类器呢？}
+    {}
+
+
+\cnt{In the first case, the classes are mutually exclusive, so a softmax regression classifier would be appropriate. In the second case, it would be more appropriate to build three separate logistic regression classifiers.}
+    {在第一个例子中，三个类别是互斥的，因此更适于选择softmax回归分类器 。而在第二个例子中，建立三个独立的 logistic回归分类器更加合适。}
+    {}
+
+
+
+\subsection{\cnt{Exercise:Softmax Regression}{练习：Softmax回归}{}} \label{chp:execsoftmaxreg}
+
+\cnt{In this problem set, you will use softmax regression(\ref{chp:softmaxreg}) to classify MNIST images. The goal of this exercise is to build a softmax classifier that you will be able to reuse in the future exercises and also on other classification problems that you might encounter.}
+    {}
+    {}
+
+
+\cnt{In the file \url{http://ufldl.stanford.edu/wiki/resources/softmax_exercise.zip},%softmax_exercise.zip,
+we have provided some starter code. You should write your code in the places indicated by ``YOUR CODE HERE" in the files.}
+    {}
+    {}
+
+
+\cnt{In the starter code, you will need to modify \texttt{softmaxCost.m} and \texttt{softmaxPredict.m} for this exercise.}
+    {}
+    {}
+
+
+\cnt{We have also provided \texttt{softmaxExercise.m} that will help walk you through the steps in this exercise.}
+    {}
+    {}
+
+\subsubsection{\cnt{Dependencies}{}{}}
+
+
+\cnt{The following additional files are required for this exercise:}
+    {}
+    {}
+
+\begin{itemize}
+  \item MNIST Dataset \url{http://yann.lecun.com/exdb/mnist/}
+  \item Support functions for loading MNIST in Matlab (\ref{chp:usemnistdata})
+  \item Starter Code \url{http://ufldl.stanford.edu/wiki/resources/softmax_exercise.zip} %(softmax_exercise.zip) 
+\end{itemize}
+
+\cnt{You will also need:}
+    {}
+    {}
+
+\begin{itemize}
+  \item \texttt{computeNumericalGradient.m} from Exercise:Sparse Autoencoder (\ref{chp:execsparseautoenc})
+\end{itemize}
+
+\emph{
+\cnt{If you have not completed the exercises listed above, we strongly suggest you complete them first.}
+    {}
+    {}
+}
+
+\subsubsection{\cnt{Step 0: Initialize constants and parameters}{}{}}
+
+\cnt{We've provided the code for this step in \texttt{softmaxExercise.m}.}
+    {}
+    {}
+
+\cnt{Two constants, inputSize and numClasses, corresponding to the size of each input vector and the number of class labels have been defined in the starter code. This will allow you to reuse your code on a different data set in a later exercise. We also initialize lambda, the weight decay parameter here.}
+    {}
+    {}
+
+\subsubsection{\cnt{Step 1: Load data}{}{}}
+
+\cnt{The starter code loads the MNIST images and labels into inputData and labels respectively. The images are pre-processed to scale the pixel values to the range $[0,1]$, and the label 0 is remapped to 10 for convenience of implementation, so that the labels take values in $\{1, 2, \ldots, 10\}$. You will not need to change any code in this step for this exercise, but note that your code should be general enough to operate on data of arbitrary size belonging to any number of classes.}
+    {}
+    {}
+
+\subsubsection{\cnt{Step 2: Implement softmaxCost}{}{}}
+
+\cnt{In softmaxCost.m, implement code to compute the softmax cost function $J(\theta)$. Remember to include the weight decay term in the cost as well. Your code should also compute the appropriate gradients, as well as the predictions for the input data (which will be used in the cross-validation step later).}
+    {}
+    {}
+
+\cnt{It is important to vectorize your code so that it runs quickly. We also provide several implementation tips below:}
+    {}
+    {}
+
+\cnt{Note: In the provided starter code, \texttt{theta} is a matrix where each the $j$th row is $\theta_j^T$}
+    {}
+    {}
+
+\cnt{\emph{Implementation Tip}: Computing the ground truth matrix - In your code, you may need to compute the ground truth matrix \texttt{M}, such that \texttt{M(r, c)} is 1 if $y^{(c)} = r$ and 0 otherwise. This can be done quickly, without a loop, using the MATLAB functions \texttt{sparse} and \texttt{full}. Specifically, the command \texttt{M = sparse(r, c, v)} creates a sparse matrix such that \texttt{M(r(i), c(i)) = v(i)} for all \texttt{i}. That is, the vectors \texttt{r} and \texttt{c} give the position of the elements whose values we wish to set, and \texttt{v} the corresponding values of the elements. Running full on a sparse matrix gives a ``full" representation of the matrix for use (meaning that Matlab will no longer try to represent it as a sparse matrix in memory). The code for using \texttt{sparse} and \texttt{full} to compute the ground truth matrix has already been included in \texttt{softmaxCost.m}.}
+    {}
+    {}
+
+\cnt{\emph{Implementation Tip}: Preventing overflows - in softmax regression, you will have to compute the hypothesis}
+    {}
+    {}
+\begin{align} h(x^{(i)}) = \frac{1}{ \sum_{j=1}^{k}{e^{ \theta_j^T x^{(i)}}}} \begin{bmatrix} e^{ \theta_1^T x^{(i)}} \\ e^{ \theta_2^T x^{(i)}} \\ \vdots \\ e^{ \theta_k^T x^{(i)}} \\ \end{bmatrix} \end{align}
+
+\cnt{When the products $\theta_i^T x^{(i)}$ are large, the exponential function $e^{\theta_i^T x^{(i)}}$ will become very large and possibly overflow. When this happens, you will not be able to compute your hypothesis. However, there is an easy solution - observe that we can multiply the top and bottom of the hypothesis by some constant without changing the output:}
+    {}
+    {}
+
+
+\begin{align} h(x^{(i)}) &= \frac{1}{ \sum_{j=1}^{k}{e^{ \theta_j^T x^{(i)}}}} \begin{bmatrix} e^{ \theta_1^T x^{(i)}} \\ e^{ \theta_2^T x^{(i)}} \\ \vdots \\ e^{ \theta_k^T x^{(i)}} \\ \end{bmatrix} \\ &= \frac{ e^{-\alpha}}{ e^{-\alpha} \sum_{j=1}^{k}{e^{ \theta_j^T x^{(i)}}}} \begin{bmatrix} e^{ \theta_1^T x^{(i)}} \\ e^{ \theta_2^T x^{(i)}} \\ \vdots \\ e^{ \theta_k^T x^{(i)}} \\ \end{bmatrix} \\ &= \frac{ 1}{ \sum_{j=1}^{k}{e^{ \theta_j^T x^{(i)} - \alpha}}} \begin{bmatrix} e^{ \theta_1^T x^{(i)} - \alpha} \\ e^{ \theta_2^T x^{(i)} - \alpha} \\ \vdots \\ e^{ \theta_k^T x^{(i)} - \alpha} \\ \end{bmatrix} \\ \end{align}
+
+\cnt{Hence, to prevent overflow, simply subtract some large constant value from each of the $\theta_j^T x^{(i)}$ terms before computing the exponential. In practice, for each example, you can use the maximum of the $\theta_j^T x^{(i)}$ terms as the constant. Assuming you have a matrix \texttt{M} containing these terms such that \texttt{M(r, c)} is $\theta_r^T x^{(c)}$, then you can use the following code to accomplish this:}
+    {}
+    {}
+\begin{lstlisting}[language=matlab]
+% M is the matrix as described in the text
+M = bsxfun(@minus, M, max(M, [], 1));
+\end{lstlisting}
+
+\cnt{\texttt{max(M)} yields a row vector with each element giving the maximum value in that column. \texttt{bsxfun} (short for binary singleton expansion function) applies minus along each row of \texttt{M}, hence subtracting the maximum of each column from every element in the column.}
+    {}
+    {}
+
+
+\cnt{\emph{Implementation Tip}: Computing the predictions - you may also find \texttt{bsxfun} useful in computing your predictions - if you have a matrix \texttt{M} containing the $e^{\theta_j^T x^{(i)}}$ terms, such that \texttt{M(r, c)} contains the $e^{\theta_r^T x^{(c)}}$ term, you can use the following code to compute the hypothesis (by dividing all elements in each column by their column sum):}
+    {}
+    {}
+
+
+\begin{lstlisting}[language=matlab]
+% M is the matrix as described in the text
+M = bsxfun(@rdivide, M, sum(M))
+\end{lstlisting}
+
+\cnt{The operation of \texttt{bsxfun} in this case is analogous to the earlier example.}
+    {}
+    {}
+
+\subsubsection{\cnt{Step 3: Gradient checking}{}{}}
+
+\cnt{Once you have written the softmax cost function, you should check your gradients numerically. In general, whenever implementing any learning algorithm, you should always check your gradients numerically before proceeding to train the model. The norm of the difference between the numerical gradient and your analytical gradient should be small, on the order of $10^{-9}$.}
+    {}
+    {}
+
+\cnt{Implementation Tip: Faster gradient checking - when debugging, you can speed up gradient checking by reducing the number of parameters your model uses. In this case, we have included code for reducing the size of the input data, using the first 8 pixels of the images instead of the full $28 \times 28$ images. This code can be used by setting the variable \texttt{DEBUG} to true, as described in step 1 of the code.}
+    {}
+    {}
+
+\subsubsection{\cnt{Step 4: Learning parameters}{}{}}
+
+\cnt{Now that you've verified that your gradients are correct, you can train your softmax model using the function \texttt{softmaxTrain} in \texttt{softmaxTrain.m}. \texttt{softmaxTrain} which uses the L-BFGS algorithm, in the function \texttt{minFunc}. Training the model on the entire MNIST training set of 60000 $28 \times 28$ images should be rather quick, and take less than 5 minutes for 100 iterations.}
+    {}
+    {}
+
+\cnt{Factoring \texttt{softmaxTrain} out as a function means that you will be able to easily reuse it to train softmax models on other data sets in the future by invoking the function with different parameters.}
+    {}
+    {}
+
+\cnt{Use the following parameter when training your softmax classifier:}
+    {}
+    {}
+
+\begin{lstlisting}[language=matlab]
+lambda = 1e-4
+\end{lstlisting}
+
+
+\subsubsection{\cnt{Step 5: Testing}{}{}}
+
+\cnt{Now that you've trained your model, you will test it against the MNIST test set, comprising 10000 $28 \times 28$ images. However, to do so, you will first need to complete the function \texttt{softmaxPredict} in \texttt{softmaxPredict.m}, a function which generates predictions for input data under a trained softmax model.}
+    {}
+    {}
+
+\cnt{Once that is done, you will be able to compute the accuracy (the proportion of correctly classified images) of your model using the code provided. Our implementation achieved an accuracy of 92.6\%. If your model's accuracy is significantly less (less than 91\%), check your code, ensure that you are using the trained weights, and that you are training your model on the full 60000 training images. Conversely, if your accuracy is too high (99-100\%), ensure that you have not accidentally trained your model on the test set as well.}
+    {}
+    {}

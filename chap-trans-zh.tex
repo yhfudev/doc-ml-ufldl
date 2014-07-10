@@ -1,0 +1,708 @@
+%# -*- coding: utf-8 -*-
+%!TEX encoding = UTF-8 Unicode
+%!TEX TS-program = xelatex
+% vim:ts=4:sw=4
+%
+% 以上设定默认使用 XeLaTex 编译，并指定 Unicode 编码，供 TeXShop 自动识别
+
+% Author: Yunhui Fu <yhfudev@gmail.com>
+% License: Creative Commons (CC BY 4.0)
+
+\section{\cnt{Chinese Version}{中文版本说明}{}}
+
+
+\subsection{\cnt{Chinese-English dictionary}{中英文词汇对照}{}}
+
+
+\begin{longtable}[h]{m{0.4\textwidth}m{0.4\textwidth}}
+\caption{中英文词汇对照} \label{tab:zhendict} \\
+\toprule
+\textbf{英文}&\textbf{中文} \\
+\midrule
+\endfirsthead  % endfirsthead 以上內容只出現在第一頁
+\midrule
+\textbf{英文}&\textbf{中文} \\
+\midrule
+\endhead % endfirsthead 及 endhead 間的內容會排版至每頁上方
+%\midrule
+\multicolumn{2}{r}{续下页 \dots} \\
+\midrule
+
+\endfoot % endfoot 以上的內會出現在每頁底部
+\endlastfoot
+
+neural networks & 神经网络 \\
+  \midrule
+
+activation function & 激活函数 \\
+  \midrule
+
+hyperbolic tangent & 双曲正切函数 \\
+  \midrule
+
+bias units & 偏置项 \\
+  \midrule
+
+activation & 激活值 \\
+  \midrule
+
+forward propagation & 前向传播 \\
+  \midrule
+
+feedforward neural network & 前馈神经网络(参照Mitchell的《机器学习》的翻译) \\
+  \midrule
+
+Backpropagation Algorithm & 反向传播算法 \\
+  \midrule
+
+(batch) gradient descent & （批量）梯度下降法 \\
+  \midrule
+
+(overall) cost function & （整体）代价函数 \\
+  \midrule
+
+squared-error & 方差 \\
+  \midrule
+
+average sum-of-squares error & 均方差 \\
+  \midrule
+
+regularization term & 规则化项 \\
+  \midrule
+
+weight decay & 权重衰减 \\
+  \midrule
+
+bias terms & 偏置项 \\
+  \midrule
+
+Bayesian regularization method & 贝叶斯规则化方法 \\
+  \midrule
+
+Gaussian prior & 高斯先验概率 \\
+  \midrule
+
+MAP & 极大后验估计 \\
+  \midrule
+
+maximum likelihood estimation & 极大似然估计 \\
+  \midrule
+
+activation function & 激活函数 \\
+  \midrule
+
+tanh function & 双曲正切函数 \\
+  \midrule
+
+non-convex function & 非凸函数 \\
+  \midrule
+
+hidden (layer) units & 隐藏层单元 \\
+  \midrule
+
+symmetry breaking & 对称失效 \\
+  \midrule
+
+learning rate & 学习速率 \\
+  \midrule
+
+forward pass & 前向传导\\
+  \midrule
+
+hypothesis & 假设值 \\
+  \midrule
+
+error term & 残差 \\
+  \midrule
+
+weighted average & 加权平均值 \\
+  \midrule
+
+feedforward pass & 前馈传导 \\
+  \midrule
+
+Hadamard product & 阿达马乘积 \\
+  \midrule
+
+forward propagation & 前向传播 \\
+  \midrule
+
+off-by-one error & 缺位错误 \\
+  \midrule
+
+bias term & 偏置项 \\
+  \midrule
+
+numerically checking & 数值检验 \\
+  \midrule
+
+numerical roundoff errors & 数值舍入误差 \\
+  \midrule
+
+significant digits & 有效数字 \\
+  \midrule
+
+unrolling & 组合扩展 \\
+  \midrule
+
+learning rate & 学习速率 \\
+  \midrule
+
+Hessian matrix & Hessian 矩阵 \\
+  \midrule
+
+Newton's method & 牛顿法 \\
+  \midrule
+
+conjugate gradient & 共轭梯度 \\
+  \midrule
+
+step-size & 步长值 \\
+  \midrule
+
+自编码算法 Autoencoders \\
+  \midrule
+
+稀疏性 Sparsity \\
+  \midrule
+
+神经网络 neural networks \\
+  \midrule
+
+监督学习 supervised learning \\
+  \midrule
+
+无监督学习 unsupervised learning \\
+  \midrule
+
+隐藏神经元 hidden units \\
+  \midrule
+
+像素灰度值 the pixel intensity value \\
+  \midrule
+
+独立同分布 IID \\
+  \midrule
+
+主元分析 PCA \\
+  \midrule
+
+激活 active \\
+  \midrule
+
+抑制 inactive \\
+  \midrule
+
+激活函数 activation function \\
+  \midrule
+
+激活度 activation \\
+  \midrule
+
+平均活跃度 the average activation \\
+  \midrule
+
+稀疏性参数 sparsity parameter \\
+  \midrule
+
+惩罚因子 penalty term \\
+  \midrule
+
+相对熵 KL divergence \\
+  \midrule
+
+伯努利随机变量 Bernoulli random variable \\
+  \midrule
+
+总体代价函数 overall cost function \\
+  \midrule
+
+后向传播 backpropagation \\
+  \midrule
+
+前向传播 forward pass \\
+  \midrule
+
+梯度下降 gradient descent \\
+  \midrule
+
+目标函数 the objective \\
+  \midrule
+
+梯度验证方法 the derivative checking method \\
+  \midrule
+
+可视化 Visualizing \\
+  \midrule
+
+自编码器 Autoencoder \\
+  \midrule
+
+隐藏单元 hidden unit \\
+  \midrule
+
+非线性特征 non-linear feature \\
+  \midrule
+
+激励 activate \\
+  \midrule
+
+平凡解 trivial answer \\
+  \midrule
+
+范数约束 norm constrained \\
+  \midrule
+
+稀疏自编码器 sparse autoencoder \\
+  \midrule
+
+有界范数 norm bounded \\
+  \midrule
+
+输入域 input domains \\
+  \midrule
+
+逻辑回归 Logistic Regression \\
+  \midrule
+
+批量梯度上升法 batch gradient ascent \\
+  \midrule
+
+截距 intercept term \\
+  \midrule
+
+对数似然函数 the log likelihood \\
+  \midrule
+
+导函数 derivative \\
+  \midrule
+
+梯度 gradient \\
+  \midrule
+
+向量化 vectorization \\
+  \midrule
+
+正向传播 forward propagation \\
+  \midrule
+
+反向传播 backpropagation \\
+  \midrule
+
+训练样本 training examples \\
+  \midrule
+
+激活函数 activation function \\
+  \midrule
+
+稀疏自编码网络 sparse autoencoder \\
+  \midrule
+
+稀疏惩罚 sparsity penalty \\
+  \midrule
+
+平均激活率 average firing rate \\
+  \midrule
+
+Principal Components Analysis 主成份分析 \\
+  \midrule
+
+whitening 白化 \\
+  \midrule
+
+intensity 亮度 \\
+  \midrule
+
+mean 平均值 \\
+  \midrule
+
+variance 方差 \\
+  \midrule
+
+covariance matrix 协方差矩阵 \\
+  \midrule
+
+basis 基 \\
+  \midrule
+
+magnitude 幅值 \\
+  \midrule
+
+stationarity 平稳性 \\
+  \midrule
+
+normalization 归一化 \\
+  \midrule
+
+eigenvector 特征向量 \\
+  \midrule
+
+eigenvalue 特征值 \\
+  \midrule
+
+白化 whitening \\
+  \midrule
+
+冗余 redundant \\
+  \midrule
+
+方差 variance \\
+  \midrule
+
+平滑 smoothing \\
+  \midrule
+
+降维 dimensionality reduction \\
+  \midrule
+
+正则化 regularization \\
+  \midrule
+
+反射矩阵 reflection matrix \\
+  \midrule
+
+去相关 decorrelation \\
+  \midrule
+
+Softmax回归 Softmax Regression \\
+  \midrule
+
+有监督学习 supervised learning \\
+  \midrule
+
+无监督学习 unsupervised learning \\
+  \midrule
+
+深度学习 deep learning \\
+  \midrule
+
+logistic回归 logistic regression \\
+  \midrule
+
+截距项 intercept term \\
+  \midrule
+
+二元分类 binary classification \\
+  \midrule
+
+类型标记 class labels \\
+  \midrule
+
+估值函数/估计值 hypothesis \\
+  \midrule
+
+代价函数 cost function \\
+  \midrule
+
+多元分类 multi-class classification \\
+  \midrule
+
+权重衰减 weight decay \\
+  \midrule
+
+自我学习/自学习 self-taught learning \\
+  \midrule
+
+无监督特征学习 unsupervised feature learning \\
+  \midrule
+
+自编码器 autoencoder \\
+  \midrule
+
+白化 whitening \\
+  \midrule
+
+激活量 activation \\
+  \midrule
+
+稀疏自编码器 sparse autoencoder \\
+  \midrule
+
+半监督学习 semi-supervised learning \\
+  \midrule
+
+自我学习 self-taught learning \\
+  \midrule
+
+深层网络 deep networks \\
+  \midrule
+
+微调 fine-tune \\
+  \midrule
+
+稀疏自编码器 sparse autoencoder \\
+  \midrule
+
+梯度下降 gradient descent \\
+  \midrule
+
+非监督特征学习 unsupervised feature learning \\
+  \midrule
+
+    pre-training & 预训练 \\
+  \midrule
+
+深度网络 Deep Networks \\
+  \midrule
+
+深度神经网络 deep neural networks \\
+  \midrule
+
+非线性变换 non-linear transformation \\
+  \midrule
+
+激活函数 activation function \\
+  \midrule
+
+简洁地表达 represent compactly \\
+  \midrule
+
+“部分-整体”的分解 part-whole decompositions \\
+  \midrule
+
+目标的部件 parts of objects \\
+  \midrule
+
+高度非凸的优化问题 highly non-convex optimization problem \\
+  \midrule
+
+共轭梯度 conjugate gradient \\
+  \midrule
+
+梯度的弥散 diffusion of gradients \\
+  \midrule
+
+逐层贪婪训练方法 Greedy layer-wise training \\
+  \midrule
+
+自动编码器 autoencoder \\
+  \midrule
+
+微调 fine-tuned \\
+  \midrule
+
+自学习方法 self-taught learning \\
+  \midrule
+
+栈式自编码神经网络（可以考虑翻译为“多层自动编码机”或“多层自动编码神经网络”） Stacked autoencoder \\
+  \midrule
+
+微调 Fine tuning \\
+  \midrule
+
+反向传播算法 Backpropagation Algorithm \\
+  \midrule
+
+前馈传递 feedforward pass \\
+  \midrule
+
+激活值 （可以考虑翻译为“激励响应”或“响应”） activation \\
+  \midrule
+
+线性解码器 Linear Decoders 
+
+稀疏自编码 Sparse Autoencoder 
+
+输入层 input layer 
+
+隐含层 hidden layer 
+
+输出层 output layer 
+
+神经元 neuron 
+
+神经网络 neural network 
+
+自编码器 autoencoder 
+
+激励函数 activation function 
+
+鲁棒 robust 
+
+S型激励函数 sigmoid activation function 
+
+tanh激励函数 tanh function 
+
+线性激励函数 linear activation function 
+
+恒等激励函数 identity activation function 
+
+隐单元 hidden unit 
+
+权重 weight 
+
+偏差项 error term 
+
+反向传播算法 backpropagation
+
+
+全联通网络 Full Connected Networks 
+
+稀疏编码 Sparse Autoencoder 
+
+前向输送 Feedforward 
+
+反向传播 Backpropagation 
+
+部分联通网络 Locally Connected Networks 
+
+连接区域 Contiguous Groups 
+
+视觉皮层 Visual Cortex 
+
+卷积 Convolution 
+
+固有特征 Stationary 
+
+池化 Pool 
+
+    稀疏编码 Sparse Coding 
+    无监督学习 unsupervised method 
+    超完备基 over-complete bases 
+    主成分分析 PCA 
+    稀疏性 sparsity 
+    退化 degeneracy 
+    代价函数 cost function 
+    重构项 reconstruction term 
+    稀疏惩罚项 sparsity penalty 
+    范式 norm 
+    生成模型 generative model 
+    线性叠加 linear superposition 
+    加性噪声 additive noise 
+    特征基向量 basis feature vectors 
+    经验分布函数 the empirical distribution 
+    KL 散度 KL divergence 
+    对数似然函数 the log-likelihood 
+    高斯白噪音 Gaussian white noise 
+    先验分布 the prior distribution 
+    先验概率 prior probability 
+    源特征 source features 
+    能量函数 the energy function 
+    正则化 regularized 
+    最小二乘法 least squares 
+    凸优化软件convex optimization software 
+    共轭梯度法 conjugate gradient methods 
+    二次约束 quadratic constraints 
+    拉格朗日对偶函数 the Lagrange dual 
+    前馈结构算法 feedforward architectures 
+    稀疏编码 sparse coding 
+    自编码 autoencoder 
+    目标函数 objective function 
+    稀疏代价 sparsity cost 
+    反向传播 backpropagation 
+    基于梯度的 gradient-based 
+    非凸的 non-convex 
+    权重衰变 weight decay 
+    拓扑稀疏编码 topographic sparse coding 
+    拓扑秩序 topographically ordered 
+    平滑的一范数惩罚 smoothed L1 penalty 
+    迷你块 mini-batches 
+    收敛速度 the rate of convergence 
+    梯度下降 gradient descent 
+    局部最优解 local optima
+    归一化 normalization 
+
+    白化 whitening 
+
+    直流分量 DC component 
+
+    局部均值消减 local mean subtraction 
+
+    消减归一化 sparse autoencoder 
+
+    缩放 rescaling 
+
+    逐样本均值消减 per-example mean subtraction 
+
+    特征标准化 feature standardization 
+
+    平稳 stationary 
+
+    Mel倒频系数 MFCC 
+
+    零均值化 zero-mean 
+
+    低通滤波 low-pass filtering 
+
+    基于重构的模型 reconstruction based models 
+
+    自编码器 autoencoders 
+
+    稀疏编码 sparse coding 
+
+    受限Boltzman机 RBMs 
+
+    k-均值 k-Means 
+
+    长尾 long tail 
+
+    损失函数 loss function 
+
+    正交化 orthogonalization
+    反向传导 backpropagation 
+    稀疏编码 sparse coding 
+    权重矩阵 weight matrix 
+    目标函数 objective 
+    平滑地形L1稀疏罚函数 Smoothed topographic L1 sparsity penalty 
+    重建代价 reconstruction cost 
+    稀疏自编码器 sparse autoencoder 
+    梯度 gradient 
+    神经网络 neural network 
+    神经元 neuron 
+    激励 activation 
+    激励函数 activation function 
+    独立成分分析 independent component analysis 
+    单位激励函数 identity activation function 
+    平方函数 square function 
+    分组矩阵 grouping matrix 
+    特征矩阵 feature matrix 
+    独立成分分析 Independent Component Analysis 
+    稀疏编码算法 Sparse coding 
+    超完备基 Over-complete basis 
+    标准正交基 Orthonormal basis 
+    稀疏惩罚项 Sparsity penalty 
+    梯度下降法 Gradient descent 
+    白化 Whitened 
+    不完备基 Under-complete basis 
+    线搜索算法 Line-search algorithm 
+    拓扑代价项 Topographic cost term 
+\\
+
+\bottomrule
+\end{longtable}
+
+\subsection{\cnt{Translator}{翻译人员}{}}
+
+
+\begin{longtable}[h]{cm{0.8\textwidth}}
+\caption{翻译人员} \label{tab:zhtranslator} \\
+\toprule
+\textbf{章节}&\textbf{翻译} \\
+\midrule
+\endfirsthead  % endfirsthead 以上內容只出現在第一頁
+\midrule
+\textbf{章节}&\textbf{翻译} \\
+\midrule
+\endhead % endfirsthead 及 endhead 間的內容會排版至每頁上方
+%\midrule
+\multicolumn{2}{r}{续下页 \dots} \\
+\midrule
+
+\endfoot % endfoot 以上的內會出現在每頁底部
+\endlastfoot
+
+\ref{chp:neuralnet} & { 孙逊（\mailurl{sunpaofu@foxmail.com}），林锋（\mailurl{xlfg@yeah.net}），刘鸿鹏飞（\mailurl{just.dark@foxmail.com}）,许利杰（\mailurl{csxulijie@gmail.com}） } \\
+  \midrule
+
+\ref{chp:bkpropgationalg} & 王方（\mailurl{fangkey@gmail.com}），林锋（\mailurl{xlfg@yeah.net}），许利杰（\mailurl{csxulijie@gmail.com}） \\
+  \midrule
+
+\ref{chp:gradcheckingopt} & 袁晓丹（\mailurl{shadowwalker1991@gmail.com}），王方（\mailurl{fangkey@gmail.com}），林锋（\mailurl{xlfg@yeah.net}），许利杰（\mailurl{csxulijie@gmail.com}） \\
+  \midrule
+
+\ref{chp:autoencsparse} & 周韬（\mailurl{ztsailing@gmail.com}），葛燕儒（\mailurl{yrgehi@gmail.com}），林锋（\mailurl{xlfg@yeah.net}），余凯（\mailurl{kai.yu.cool@gmail.com}）  \\
+
+
+\bottomrule
+\end{longtable}
+

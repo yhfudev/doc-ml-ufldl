@@ -1,0 +1,184 @@
+%# -*- coding: utf-8 -*-
+%!TEX encoding = UTF-8 Unicode
+%!TEX TS-program = xelatex
+%~ \XeTeXinputencoding "UTF-8"
+% vim:ts=4:sw=4
+%
+% 以上设定默认使用 XeLaTex 编译，并指定 Unicode 编码，供 TeXShop 自动识别
+
+% Author: Yunhui Fu <yhfudev@gmail.com>
+% License: Creative Commons (CC BY 4.0)
+
+\documentclass[letter,12pt,onecolumn]{article}
+%\documentclass[letter,12pt,onecolumn]{book}
+
+\newcommand{\doctitle}{\cnt{UFLDL Tutorial}{UFLDL教程}{}}
+\newcommand{\docauthor}{ver 201406}
+\newcommand{\dockeywords}{}
+\newcommand{\docsubject}{}
+
+\newcommand{\docversion}[0]{2014-06-11}
+
+\newcommand{\usedefaultTWO}[2]{
+\if\relax\detokenize{#2}\relax
+  #1
+\else
+  #2
+\fi
+}
+
+\newcommand{\usedefaultTHREE}[3]{
+\if\relax\detokenize{#3}\relax
+  \usedefaultTWO{#1}{#2}
+\else
+  #3
+\fi
+}
+
+% 用于接受从 xelatex/pdflatex 通过参数 -jobname 传入的参数来判定编译何种语言的版本。
+% \cnt 的三个参数分别为 en/zh/tw 的内容
+\newcommand{\cnt}[3]{{#1}{#2}{#3}}
+%\newcommand{\cnt}[3]{#1} % default en
+\usepackage{ifthen}
+\ifthenelse{\equal{\detokenize{lang-zh}}{\jobname}}{
+  \renewcommand{\cnt}[3]{\usedefaultTWO{#1}{#2}}
+}{
+  \ifthenelse{\equal{\detokenize{lang-tw}}{\jobname}}{
+    \renewcommand{\cnt}[3]{\usedefaultTHREE{#1}{#2}{#3}}
+  }{
+    % default en
+    \renewcommand{\cnt}[3]{#1}
+    %\renewcommand{\cnt}[3]{#2}
+  }
+}
+
+\newcommand{\cnts}[3]{{#1} {#2}}
+
+% 根据配置来设置中文环境
+\newcommand\charsetzhcn[1]{#1} % the charset encoding for zh_CN
+\newcommand\formatzhcn[1]{#1} % the page format for zh_CN
+\cnt{
+\renewcommand\charsetzhcn[1]{} % the charset encoding for zh_CN
+\renewcommand\formatzhcn[1]{} % the page format for zh_CN
+}{
+\renewcommand\charsetzhcn[1]{#1} % the charset encoding for zh_CN
+\renewcommand\formatzhcn[1]{#1} % the page format for zh_CN
+}{
+\renewcommand\charsetzhcn[1]{#1} % the charset encoding for zh_CN
+\renewcommand\formatzhcn[1]{#1} % the page format for zh_CN
+}
+
+\input{cndoc.tex}
+
+\newcommand\comments[1]{#1}
+\renewcommand\comments[1]{}
+
+\newcommand{\mailurl}[1]{\url{mailto:#1}}
+\renewcommand{\mailurl}[1]{\href{mailto:#1}{#1}}
+
+\newcommand{\notes}[1]{#1}
+
+
+%\usepackage[margin=1.2in,nohead]{geometry}
+%\usepackage[margin=1.8cm,nohead]{geometry}
+\usepackage[margin=0.8in]{geometry}
+%\usepackage[top=1in,bottom=1in,left=1.25in,right=1.25in]{geometry} % 设置页边距
+\setlength{\belowcaptionskip}{1em} % 设置caption之后的距离
+
+\usepackage{makeidx}
+
+%\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+%\usepackage{amsfonts,amsthm}
+\usepackage{amsmath}
+
+\usepackage{booktabs,longtable} % table in seperate pages.
+\usepackage{array}
+% table's multirow and multicolumn
+\usepackage{multirow}
+
+
+\usepackage{chapterbib}
+\usepackage[sectionbib,super,square,sort&compress]{natbib}
+
+\title{\doctitle}
+
+\date{} %{Feb. 2013} % <--- leave date empty
+\author{
+  \docauthor%
+    \thanks{
+\cnt{This document was formated base on the online \href{http://deeplearning.stanford.edu/wiki/index.php/UFLDL_Tutorial}{UFLDL Tutorial}  \docversion. You may update the latest version from \href{https://github.com/yhfudev/doc-ml-ufldl.git}{GitHub}. Please don't hesitate to leave message in the web site if you have any comments or suggestion. Yes, the format of this document is not perfect, and you may adjust it by yourself if you want. Don't forget to share your version, and notify me to update this document. Thanks, have fun!}
+    %{本文档基于 \href{http://deeplearning.stanford.edu/wiki/index.php/UFLDL%E6%95%99%E7%A8%8B}{UFLDL 教程} \docversion 版本编辑而成。}
+    {本文档基于 \href{http://deeplearning.stanford.edu/wiki/index.php/UFLDL_Tutorial}{UFLDL 教程} \docversion 版本编辑而成。你可以在 \href{https://github.com/yhfudev/doc-ml-ufldl.git}{GitHub} 上获取本文档的最新版。如果你有什么建议，请在网站上留言。 是的，这文档在排版上还不完美，如果你愿意，也可以自己动手修改，别忘了分享你的更新并通知我更新这个文档。谢谢！}
+    {}
+        }
+}
+
+
+\makeindex
+
+\begin{document}
+
+\maketitle
+
+\section{\cnt{Introduction}{介绍}{介紹}}
+
+\cnt{This tutorial will teach you the main ideas of Unsupervised Feature Learning and Deep Learning. By working through it, you will also get to implement several feature learning/deep learning algorithms, get to see them work for yourself, and learn how to apply/adapt these ideas to new problems.} % en/zh/tw
+    {本教程将阐述无监督特征学习和深度学习的主要观点。通过学习，你也将实现多个功能学习/深度学习算法，能看到它们为你工作，并学习如何应用/适应这些想法到新问题上。}
+    {}
+
+\cnt{This tutorial assumes a basic knowledge of machine learning (specifically, familiarity with the ideas of supervised learning, logistic regression, gradient descent). If you are not familiar with these ideas, we suggest you go to this \href{http://openclassroom.stanford.edu/MainFolder/CoursePage.php?course=MachineLearning}{Machine Learning course} and complete sections II, III, IV (up to Logistic Regression) first.}
+    {本教程假定机器学习的基本知识（特别是熟悉的监督学习，逻辑回归，梯度下降的想法），如果你不熟悉这些想法，我们建议你去这里 \href{http://openclassroom.stanford.edu/MainFolder/CoursePage.php?course=MachineLearning}{机器学习课程}，并先完成第II，III，IV章（到逻辑回归）。}
+    {}
+
+\cnt{Material contributed by:}
+    {英文原文作者:}
+    {}
+Andrew Ng, Jiquan Ngiam, Chuan Yu Foo, Yifan Mai, Caroline Suen
+
+
+\clearpage
+\input{chap-sparseautodec}
+
+\clearpage
+\input{chap-vector}
+
+\clearpage
+\input{chap-pca}
+
+\clearpage
+\input{chap-softmax}
+
+\clearpage
+\input{chap-selftaught}
+
+\clearpage
+\input{chap-deepnet}
+
+\clearpage
+\input{chap-ldautoenc}
+
+\clearpage
+\input{chap-largeimage}
+
+\clearpage
+\input{chap-sparsecoding}
+
+\clearpage
+\input{chap-icamodel}
+
+\appendix
+
+\input{chap-appendix}
+
+
+\cnt{}
+    {\input{chap-trans-zh}}
+    {}
+
+\printindex
+
+%\bibliographystyle{ieeetr}%{unsrt}
+%\bibliography{ref}
+
+\end{document}
