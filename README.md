@@ -1,7 +1,7 @@
 UFLDL Tutorial
 ==================================================
 
-This project is to re-formated the content of Stanford's Unsupervised Feature Learning and Deep Learning Tutorial.
+This project is to re-formated the content of Stanford's Unsupervised Feature Learning and Deep Learning Tutorial (http://deeplearning.stanford.edu/wiki/index.php/UFLDL_Tutorial).
 
 It includes both Engish and Chinese version in latex source, and it also compiled as PDF format.
 
@@ -10,8 +10,7 @@ You may update the latest version from GitHub(https://github.com/yhfudev/doc-ml-
 UFLDL Tutorial
 ==================================================
 
-¸ÃÏîÄ¿ÖØĞÂ¸ñÊ½»¯ÁËË¹Ì¹¸£µÄÎŞ¼à¶½ÌØÕ÷Éî¶ÈÑ§Ï°½Ì³Ì(Unsupervised Feature Learning and Deep Learning Tutorial).
-°üº¬ÁËÓ¢ÎÄºÍÖĞÎÄÁ½ÖÖ°æ±¾,²¢Ìá¹©PDF¸ñÊ½ÎÄ¼ş¹©ÏÂÔØ.
+è¯¥é¡¹ç›®é‡æ–°æ ¼å¼åŒ–äº†æ–¯å¦ç¦çš„æ— ç›‘ç£ç‰¹å¾æ·±åº¦å­¦ä¹ æ•™ç¨‹(Unsupervised Feature Learning and Deep Learning Tutorial, http://deeplearning.stanford.edu/wiki/index.php/UFLDL_Tutorial).
+åŒ…å«äº†è‹±æ–‡å’Œä¸­æ–‡ä¸¤ç§ç‰ˆæœ¬,å¹¶æä¾›PDFæ ¼å¼æ–‡ä»¶ä¾›ä¸‹è½½.
 
-Äã¿ÉÒÔÔÚ GitHub(https://github.com/yhfudev/doc-ml-ufldl.git) ÉÏ»ñÈ¡±¾ÎÄµµµÄ×îĞÂ°æ¡£Èç¹ûÄãÓĞÊ²Ã´½¨Òé£¬ÇëÔÚÍøÕ¾ÉÏÁôÑÔ¡£ ÊÇµÄ£¬ÕâÎÄµµÔÚÅÅ°æÉÏ»¹²»ÍêÃÀ£¬Èç¹ûÄãÔ¸Òâ£¬Ò²¿ÉÒÔ×Ô¼º¶¯ÊÖĞŞ¸Ä£¬±ğÍüÁË·ÖÏíÄãµÄ¸üĞÂ²¢Í¨ÖªÎÒ¸üĞÂÕâ¸öÎÄµµ¡£Ğ»Ğ»£¡
-
+ä½ å¯ä»¥åœ¨ GitHub(https://github.com/yhfudev/doc-ml-ufldl.git) ä¸Šè·å–æœ¬æ–‡æ¡£çš„æœ€æ–°ç‰ˆã€‚å¦‚æœä½ æœ‰ä»€ä¹ˆå»ºè®®ï¼Œè¯·åœ¨ç½‘ç«™ä¸Šç•™è¨€ã€‚ æ˜¯çš„ï¼Œè¿™æ–‡æ¡£åœ¨æ’ç‰ˆä¸Šè¿˜ä¸å®Œç¾ï¼Œå¦‚æœä½ æ„¿æ„ï¼Œä¹Ÿå¯ä»¥è‡ªå·±åŠ¨æ‰‹ä¿®æ”¹ï¼Œåˆ«å¿˜äº†åˆ†äº«ä½ çš„æ›´æ–°å¹¶é€šçŸ¥æˆ‘æ›´æ–°è¿™ä¸ªæ–‡æ¡£ã€‚è°¢è°¢ï¼
