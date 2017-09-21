@@ -197,7 +197,7 @@ end;
 \end{lstlisting}
 
 \cnt{Can we get rid of the \texttt{for} loop? For many algorithms, we will represent intermediate stages of computation via vectors. For example, \texttt{z2, a2}, and \texttt{z3} here are all column vectors that're used to compute the activations of the hidden and output layers. In order to take better advantage of parallelism and efficient matrix operations, we would like to \emph{have our algorithm operate simultaneously on many training examples}. Let us temporarily ignore \texttt{b1} and \texttt{b2} (say, set them to zero for now). We can then implement the following:}
-    {这个\texttt{for}循环能否去掉呢？对于很多算法而言，我们使用向量来表示计算过程中的中间结果。例如在前面的非向量化实现中，\texttt{z2,a2,z3}都是列向量，分别用来计算隐层和输出层的激励结果。为了充分利用并行化和高效矩阵运算的优势，我们希望算法能同时处理多个训练样本。让我们先暂时忽略前面公式中的\texttt{b1}和\texttt{b2}(把它们设置为0)，那么可以实现如下:}
+    {这个\texttt{for}循环能否去掉呢？对于很多算法而言，我们使用向量来表示计算过程中的中间结果。例如在前面的非向量化实现中，\texttt{z2,a2,z3}都是列向量，分别用来计算隐层和输出层的激励结果。为了充分利用并行化和高效矩阵运算的优势，我们希望\emph{算法能同时处理多个训练样本}。让我们先暂时忽略前面公式中的\texttt{b1}和\texttt{b2}(把它们设置为0)，那么可以实现如下:}
     {}
 \begin{lstlisting}[language=matlab]
 % Vectorized implementation (ignoring b1, b2)

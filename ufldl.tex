@@ -1,6 +1,7 @@
 %# -*- coding: utf-8 -*-
-%!TEX encoding = UTF-8 Unicode
-%!TEX TS-program = xelatex
+% !TeX encoding = UTF-8 Unicode
+% !TeX spellcheck = en_US
+% !TeX TS-program = xelatex
 %~ \XeTeXinputencoding "UTF-8"
 % vim:ts=4:sw=4
 %
@@ -55,6 +56,7 @@
 \newcommand{\cnts}[3]{{#1} {#2}}
 
 % 根据配置来设置中文环境
+\newcommand\usefontspeczh[1]{#1} % use fontspec for zh_CN
 \newcommand\charsetzhcn[1]{#1} % the charset encoding for zh_CN
 \newcommand\formatzhcn[1]{#1} % the page format for zh_CN
 \cnt{

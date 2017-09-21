@@ -13,20 +13,23 @@
 %\newcommand{\docauthor}{Bryan Ford \& Pyda Srisuresh \& Dan Kegel}
 %\newcommand{\dockeywords}{NAT穿越, 点对点, NAT Traversal, Peer-to-Peer}
 %\newcommand{\docsubject}{NAT穿越}
+%\newcommand\usefontspeczh[1]{#1} % use fontspec for zh_CN
 %\newcommand\charsetzhcn[1]{#1} % the charset encoding for zh_CN
 %\newcommand\formatzhcn[1]{#1} % the page format for zh_CN
 
-\newcommand\mymainfont{Times New Roman}
-\newcommand\mymonofont{FreeMono}%{AR PL UMing CN}%{FreeMono} %{WenQuanYi Micro Hei Mono} %{Monaco}
+\newcommand\mymainfont{DejaVu Serif}%{Times New Roman} %{DejaVu Serif}
+\newcommand\mymonofont{DejaVu Sans Mono}%{FreeMono} %{WenQuanYi Micro Hei Mono} %{Monaco}
 \newcommand\myboldfont{WenQuanYi Micro Hei Mono}%{AR PL UKai CN}%{YaHei Consolas Hybrid}%{黑体}%{標楷體}
-\newcommand\mysansfont{FreeSans}
-\newcommand\myitalicfont{Times New Roman} %{Garamond}
+\newcommand\mysansfont{DejaVu Sans}%{FreeSans}
+\newcommand\myitalicfont{Ubuntu Italic}%{DejaVu Serif/Italic}%{Times New Roman/Italic} %{Garamond}
 
 \newcommand\mycjkboldfont{WenQuanYi Micro Hei Mono}%{Adobe Heiti Std}%{AR PL UKai CN}%{YaHei Consolas Hybrid}%{黑体}%{標楷體}
-\newcommand\mycjkitalicfont{Adobe Kaiti Std}
-\newcommand\mycjkmainfont{AR PL UMing CN}%{Adobe Song Std}%{仿宋}%{宋体}%{新宋体}%{文鼎ＰＬ新宋}%
+\newcommand\mycjkitalicfont{全字庫正楷體} %{Adobe Kaiti Std}
+\newcommand\mycjkmainfont{Adobe Song Std}%{AR PL UMing CN}%{仿宋}%{宋体}%{新宋体}%{文鼎ＰＬ新宋}%
 \newcommand\mycjksansfont{Adobe Ming Std}
 \newcommand\mycjkmonofont{WenQuanYi Micro Hei Mono}%{AR PL UMing CN}%{WenQuanYi Micro Hei Mono}
+
+\newcommand\myurlfont{PT Sans Narrow}
 
 \usepackage{ifthen}
 \usepackage{ifpdf}
@@ -34,8 +37,10 @@
 \usepackage{ifluatex}
 
 \usepackage{color}
-\usepackage[rgb]{xcolor}
+\usepackage[rgb,x11names]{xcolor} %must before tikz, x11names defines RoyalBlue3
 
+
+\usefontspeczh{
 
 \usepackage[cm-default]{fontspec} % XeLaTex 配合 fontspec
 
@@ -58,7 +63,7 @@
     \XeTeXlinebreaklocale "zh"                      % 重要，使得中文可以正確斷行！
     \XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt  %
 
-    \setCJKmainfont[BoldFont=\mycjkboldfont, ItalicFont=\mycjkboldfont]{\mycjkmainfont}
+    \setCJKmainfont[BoldFont=\mycjkboldfont, ItalicFont=\mycjkitalicfont]{\mycjkmainfont}
     \setCJKsansfont{\mycjksansfont}%{Adobe Ming Std} %{AR PL UMing CN} %{Microsoft YaHei}
     \setCJKmonofont{\mycjkmonofont}
 
@@ -135,20 +140,21 @@
 
 } % \charsetzhcn
 
+\setmonofont[Scale=0.8]{\mymonofont} % 英文等宽字体
+\setsansfont{\mysansfont}       % 英文无衬线字体
 %\setmainfont{\mymainfont}        % 英文衬线字体, setmainfont=setromanfont
 \setromanfont[Mapping=tex-text,  % 沿用 LaTex 的一些习惯的标点转换，例如 en-dash 以两个减号表示
     Ligatures={Required,Common}, % 如果此字体内置 Ligatures 定义则启用
     ItalicFont={\myitalicfont},  % 斜体用 Times Italic，严格来说只有拉丁子母有斜体。
     BoldFont={\myboldfont}]      % 粗体用字体
     {\mymainfont}                % 内文使用字体, Linux 下用 "fc-list :lang=zh-cn" 列出支持的中文字体
-\setmonofont[Scale=0.8]{\mymonofont} % 英文等宽字体
-\setsansfont{\mysansfont}       % 英文无衬线字体
+} % \usefontspeczh
 
 % 设置中文状态下, 恢复 lstlisting 的 mono 字体
 \usepackage[T1]{fontenc}
 \DeclareTextCommandDefault{\nobreakspace}{\leavevmode\nobreak\ } % EU1 encoding setup has changed \nobreakspace from being an encoding-independent command to an encoding-dependent command, but without setting up a default definition so it works in all encodings.
 
-\usepackage{dtklogos} % \LaTeXe 等
+\usepackage{dtk-logos} % \LaTeXe 等
 % XeTeX logo
 %\def\XeTeX{\leavevmode
 %    \setbox0=\hbox{X\lower.5ex\hbox{\kern-.15em\reflectbox{E}}\kern-.1667em \TeX}%
@@ -186,7 +192,7 @@
     commentstyle=\color{ForestGreen}, %\color{red!50!green!50!blue!50}, %浅灰色的注释
     rulesepcolor=\color{red!20!green!20!blue!20}, %代码块边框为淡青色
     keywordstyle=\color{blue!90}\bfseries,        %代码关键字的颜色为蓝色，粗体
-    backgroundcolor=\color[RGB]{245,245,244},   %代码背景色 \color[rgb]{0.91,0.91,0.91}
+    backgroundcolor=\color[rgb]{1,1,1},%\color[RGB]{245,245,244},   %代码背景色 \color[rgb]{0.91,0.91,0.91}
     framextopmargin=2pt,framexbottommargin=2pt,abovecaptionskip=-3pt,belowcaptionskip=3pt,
 %    xleftmargin=4em,xrightmargin=4em, % 设定listing左右的空白
 %    %language={[ISO]C++},       %language为，还有{[Visual]C++}
@@ -296,6 +302,10 @@
     pdfpagemode=UseNone,
     pagebackref,
     bookmarksopen=true]{hyperref}
+
+\newfontfamily\urlfont{\myurlfont}
+%\renewcommand\UrlFont{\color{red}\rmfamily\itshape}
+\renewcommand\UrlFont{\urlfont}
 
 % --------------------------------------------
 % Load graphicx package with pdf if needed 
